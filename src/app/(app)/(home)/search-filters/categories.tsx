@@ -7,6 +7,7 @@ import { CustomCategory } from "../types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ListFilterIcon } from "lucide-react";
+import CategoriesSidebar from "./categories-sidebar";
 
 export default function Categories({ data }: { data: CustomCategory[] }) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -15,7 +16,7 @@ export default function Categories({ data }: { data: CustomCategory[] }) {
 
     const [visibleCount, setVisibleCount] = useState(data.length);
     const [isAnyHovered, setIsAnyHovered] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const activeCategory = "all";
 
@@ -55,6 +56,8 @@ export default function Categories({ data }: { data: CustomCategory[] }) {
 
     return (
         <div className="relative w-full">
+            <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data} />
+
             <div
                 ref={measureRef}
                 className="absolute opacity-0 pointer-events-none flex"
@@ -70,7 +73,6 @@ export default function Categories({ data }: { data: CustomCategory[] }) {
                     </div>
                 ))}
             </div>
-
 
             <div
                 ref={containerRef}
@@ -94,6 +96,7 @@ export default function Categories({ data }: { data: CustomCategory[] }) {
                             "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
                             isActiveCategoryHidden && !isAnyHovered && "bg-white border-primary",
                         )}
+                        onClick={() => setIsSidebarOpen(true)}
                     >
                         View All
                         <ListFilterIcon className="ml-2" />

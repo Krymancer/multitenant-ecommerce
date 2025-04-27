@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
 import SubCategoryMenu from "./subcategory-menu";
 import { CustomCategory } from "../types";
+import Link from "next/link";
 
 export default function CategoryDropdown({
     category,
@@ -47,7 +48,11 @@ export default function CategoryDropdown({
                         isOpen && "bg-white border-primary"
                     )}
                 >
-                    {category.name}
+                    <Link
+                        href={`/${category.slug === "all" ? "" : category.slug}`}
+                    >
+                        {category.name}
+                    </Link>
                 </Button>
                 {category.subcategories && category.subcategories.length > 0 && (
                     <div
