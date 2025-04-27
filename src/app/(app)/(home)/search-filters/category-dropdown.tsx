@@ -6,13 +6,14 @@ import { Category } from "@/payload-types";
 import { useRef, useState } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
 import SubCategoryMenu from "./subcategory-menu";
+import { CustomCategory } from "../types";
 
 export default function CategoryDropdown({
     category,
     isActive,
     isNavigationHovered,
 }: {
-    category: Category;
+    category: CustomCategory;
     isActive: boolean;
     isNavigationHovered: boolean;
 }) {
@@ -42,7 +43,8 @@ export default function CategoryDropdown({
                     variant="elevated"
                     className={cn(
                         "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
-                        isActive && !isNavigationHovered && "bg-white border-primary"
+                        isActive && !isNavigationHovered && "bg-white border-primary",
+                        isOpen && "bg-white border-primary"
                     )}
                 >
                     {category.name}
