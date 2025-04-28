@@ -1,13 +1,12 @@
-import { Category } from "@/payload-types";
 import Link from "next/link";
-import { CustomCategory } from "../types";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 export default function SubCategoryMenu({
     category,
     isOpen,
     position,
 }: {
-    category: CustomCategory;
+    category: CategoriesGetManyOutput[1];
     isOpen: boolean;
     position: { top: number; left: number };
 }) {

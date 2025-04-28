@@ -3,20 +3,20 @@
 import { useRef, useState, useEffect, act } from "react";
 
 import CategoryDropdown from "./category-dropdown";
-import { CustomCategory } from "../types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ListFilterIcon } from "lucide-react";
 import CategoriesSidebar from "./categories-sidebar";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
-export default function Categories({ data }: { data: CustomCategory[] }) {
+export default function Categories({ data }: { data: CategoriesGetManyOutput }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
     const viewAllRef = useRef<HTMLDivElement>(null);
 
     const [visibleCount, setVisibleCount] = useState(data.length);
     const [isAnyHovered, setIsAnyHovered] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const activeCategory = "all";
 
@@ -56,7 +56,7 @@ export default function Categories({ data }: { data: CustomCategory[] }) {
 
     return (
         <div className="relative w-full">
-            <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data} />
+            <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
             <div
                 ref={measureRef}
