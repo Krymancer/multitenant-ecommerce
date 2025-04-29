@@ -3,6 +3,7 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { AUTH_COOKIE } from "../constants";
+import { loginSchema, registerSchema } from "../schemas";
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
@@ -12,24 +13,28 @@ export const authRouter = createTRPCRouter({
   }),
   register: baseProcedure
     .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string(),
-        username: z.string()
-          .min(3, "Username must be at least 3 characters long")
-          .max(63, "Username must be at most 63 characters long")
-          .regex(
-            /^[a-z0-9][a-z0-9-]*[a-z0-9]$/,
-            "Username must start and end with a letter or number, and can only contain letters, numbers, and hyphens. It must start and end with a letter or number."
-          )
-          .refine(
-            (val) => !val.includes("--"),
-            "Username cannot contain consecutive hyphens"
-          )
-          .transform((val) => val.toLowerCase()),
-      })
+      registerSchema
     )
     .mutation(async ({ ctx, input }) => {
+      const existingData = await ctx.payload.find({
+        collection: "users",
+        limit: 1,
+        where: {
+          username: {
+            equals: input.username,
+          }
+        }
+      })
+
+      const existingUser = existingData.docs[0];
+
+      if (existingUser) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Username already taken",
+        });
+      }
+
       await ctx.payload.create({
         collection: "users",
         data: {
@@ -69,10 +74,7 @@ export const authRouter = createTRPCRouter({
     }),
   login: baseProcedure
     .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string(),
-      })
+      loginSchema
     )
     .mutation(async ({ ctx, input }) => {
       const data = await ctx.payload.login({
