@@ -22,8 +22,6 @@ export const categoriesRouter = createTRPCRouter({
       })),
     }));
 
-    await setTimeout(() => { }, 2000)
-
     return formattedData;
   })
 });

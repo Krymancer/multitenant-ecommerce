@@ -7,7 +7,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import BreadcrumbNavigation from "./breadcrumbs-navigation";
 
-export default function SearchFilters() {
+export function SearchFilters() {
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
 

@@ -5,7 +5,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 
 import Navbar from "@/modules/home/ui/components/navbar";
 import Footer from "@/modules/home/ui/components/footer";
-import SearchFilters, { SearchFiltersSkeleton } from "@/modules/home/ui/components/search-filters";
+import { SearchFilters, SearchFiltersSkeleton } from "@/modules/home/ui/components/search-filters";
 
 export default async function Layout({
   children,
