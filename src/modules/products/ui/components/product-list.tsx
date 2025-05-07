@@ -7,8 +7,9 @@ import { ProductCard, ProductCardSkeleton } from "./product-card";
 import { DEFAULT_LIMIT } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { InboxIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export function ProductList({ category }: { category?: string }) {
+export function ProductList({ category, tenantSlug, narrowView }: { category?: string, tenantSlug?: string, narrowView?: boolean }) {
   const [filters] = useProductsFilters();
 
   const trpc = useTRPC();
@@ -20,6 +21,7 @@ export function ProductList({ category }: { category?: string }) {
   } = useSuspenseInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
     {
       category,
+      tenantSlug,
       ...filters,
       limit: DEFAULT_LIMIT
     },
@@ -41,15 +43,18 @@ export function ProductList({ category }: { category?: string }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div className={cn(
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+        narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
+      )}>
         {data?.pages.flatMap(page => page.docs).map((product) => (
           <ProductCard
             key={product.id}
             id={product.id}
             name={product.name}
             imageUrl={product.image?.url}
-            authorUsername="junho"
-            authorImageUrl={undefined}
+            tenantSlug={product.tenant?.slug}
+            tenantImageUrl={product.tenant?.image?.url}
             reviewRating={3}
             reviewCount={5}
             price={product.price}
@@ -72,9 +77,12 @@ export function ProductList({ category }: { category?: string }) {
   );
 }
 
-export function ProductListSkeleton() {
+export function ProductListSkeleton({ narrowView }: { narrowView?: boolean }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div className={cn(
+      "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+      narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
+    )}>
       {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
         <ProductCardSkeleton key={index} />
       ))}

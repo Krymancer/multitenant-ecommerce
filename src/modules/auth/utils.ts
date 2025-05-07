@@ -9,3 +9,7 @@ export async function generateAuthCookie({ prefix, value }: { prefix: string; va
     path: "/",
   });
 }
+
+export function generateTenantUrl(slug: string) {
+  return `/tenants/${slug}`;
+}
