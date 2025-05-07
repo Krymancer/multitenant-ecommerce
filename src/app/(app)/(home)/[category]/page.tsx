@@ -5,6 +5,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 
 import { loadProductFilters } from "@/modules/products/search-params";
 import { ProductListView } from "@/modules/products/ui/views/product-list-view";
+import { DEFAULT_LIMIT } from "@/constants";
 
 export default async function CategoryPage(
   { params,
@@ -18,9 +19,10 @@ export default async function CategoryPage(
   const filters = await loadProductFilters(searchParams);
 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
     category,
     ...filters,
+    limit: DEFAULT_LIMIT,
   }));
 
   return (

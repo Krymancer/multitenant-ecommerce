@@ -11,13 +11,15 @@
     "generate:types": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
     "migrate:fresh": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload migrate:fresh",
     "db:seed": "bun run src/seed.ts",
-    "db:reset": "bun run migrate:fresh && bun run db:seed"
+    "db:reset": "bun run migrate:fresh && bun run db:seed",
+    "generate:importmap": "payload generate:importmap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@payloadcms/db-mongodb": "3.35.1",
     "@payloadcms/next": "3.35.1",
     "@payloadcms/payload-cloud": "3.35.1",
+    "@payloadcms/plugin-multi-tenant": "^3.37.0",
     "@payloadcms/richtext-lexical": "3.35.1",
     "@radix-ui/react-accordion": "^1.2.4",
     "@radix-ui/react-alert-dialog": "^1.1.7",
